@@ -1,0 +1,44 @@
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: darkgray;
+    border: 1px solid black;
+    /* border-radius: 15px 75px; */
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.border-box {
+    box-sizing: border-box;
+}
+
+.margin-100{
+    margin: 100px;
+
+    /* 오른쪽 정렬 */
+    /* margin-left: auto; */
+
+    /* 가운데 정렬 */
+    /* margin: auto; */
+}
+
+.margin-top-100{
+    margin-top: 100px;
+}
+
+.test {
+    /* 4개 t r b l */
+    margin: 25px 20px 10px 5px;
+
+    /* 3개 t rl b */
+    margin: 25px 20px 10px;
+
+    /* 2개 tb rl */
+    margin: 10px 5px;
+
+    border-style: solid;
+    border-bottom-style: double;
+    border-top-color: red;
+}

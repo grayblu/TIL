@@ -1,0 +1,32 @@
+body {
+    height: 10000px;
+}
+
+.square {
+    position: static;
+    width: 100px;
+    height: 100px;
+    background-color: darkgray;
+}
+
+.relative-box {
+    position: relative;
+    background-color: navy;
+    top: 10px;
+    left: 10px;
+}
+
+.absolute-box {
+    position: absolute;
+    background-color: red;
+    top: 30px;
+    left: 30px;
+}
+
+.fixed {
+    position: fixed;
+    background-color: chocolate;
+    bottom: 0px;
+    left: 0px;
+
+}
