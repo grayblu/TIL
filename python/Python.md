@@ -16,6 +16,8 @@
   items = dictionary.items();
   ```
 
+  
+
 - **set**은 중복값을 허용하지 않는 자료형이며 선언 시 반드시 함수를 사용한다. 중괄호로 선언 시 dict가 생성된다
 
   ```python
