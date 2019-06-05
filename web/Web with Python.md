@@ -45,7 +45,7 @@ def show_user_profile(username):
 
 ### 3. Django
 
-MTV 구조
+MTV 구조와 동작 메커니즘
 
 Model: 데이터 관리
 
@@ -67,11 +67,13 @@ $ django-admin startproject intro .
 $ python manage.py runserver
 ```
 
+App 등록 시 settings.py에서  아래와 같이 추가하며, django.xxx는 내장 Apps이다. 애플리케이션 추가 시 각 성격에 맞는 위치(주석)에 입력한다.
+
 ```bash
-$ python manage.py startapp pages	
+$ python manage.py startapp 앱이름
 ```
 
-App 등록 시 intro의 settings.py에서  아래와 같이 추가하며, django.xxx는 내장 Apps이다. 애플리케이션 추가 시 각 성격에 맞는 위치(주석)에 입력한다.
+
 
 ```python
 INSTALLED_APPS = [
@@ -153,23 +155,52 @@ settings.py 내 MIDDLEWARE는 url 패턴을 인식하기 전에 코드를 확인
 
 
 
+**장고에서 관리자 등록**
+
+```bash
+$ python manage.py createsuperuser
+```
+
+모델을 등록하면 관리자 페이지에서 모델 객체를 확인할 수 있다.
+
+```python
+from django.contrib import admin
+from .models import Board
+
+# Register your models here.
+admin.site.register(Board)
+
+```
+
+관리자페이지에 Baord라는 모델을 확인할 때 컬럼 헤드를 변경할 수 있다. 이때, BoardAdmin 클래스를 추가한다.
+
+```python
+class BoardAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'content', 'created_at', 'updated_at']
+
+admin.site.register(Board, BoardAdmin)
+```
 
 
 
+Django의 확장 기능을 설치할 수도 있으며, 설치 후 settings.py 의 INSTALLED_APPS에 추가한다. 해당 모듈은 서드 파티이므로 Local 앱과 기본 설치된 django.contrib.xxx 사이에 추가한다.
 
+```bash
+$ pip install django-extensions
+```
 
+```
+INSTALLED_APPS = (
+    ...
+    'django_extensions',
+)
+```
 
+확장 모듈은 많은 기능이 있지만 그 중 이를 통해 shell_plus를 사용하면  모델을 자동으로 임포트한다.
 
-
-
-
-
-
-
-
-
-
-
+```bash
+$ python manage.py shell_plus
+```
 
 
 
