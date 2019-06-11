@@ -161,7 +161,7 @@ settings.py 내 MIDDLEWARE는 url 패턴을 인식하기 전에 코드를 확인
 $ python manage.py createsuperuser
 ```
 
-모델을 등록하면 관리자 페이지에서 모델 객체를 확인할 수 있다.
+admin.py에서 모델을 등록하면 관리자 페이지에서 모델 객체를 확인할 수 있다.
 
 ```python
 from django.contrib import admin
@@ -204,3 +204,7 @@ $ python manage.py shell_plus
 
 
 
+### DB 초기화 방법
+
+1. migrations 에서 000$ 번호 붙은 파일들만 지우기
+2. db.splite3 파일 지우기(서버 꺼져 있어야 함)

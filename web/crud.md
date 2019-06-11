@@ -18,7 +18,9 @@ class Board(models.Model):
 
 ```
 
+django 모델을 정의할 때 타입은 아래의 링크를 참조할 것
 
+[django model type](<https://docs.djangoproject.com/es/1.10/ref/models/fields/#field-types>)
 
 ```bash
 $ python manage.py makemigrations board
@@ -183,4 +185,80 @@ save()는 board 객체에 id가 없을때는 create하고, 있으면 update
 - GET을 통해 전달받은 인자를 ORM을 통해 컬럼에 추가
 
 ※ dir(인스턴스명) 을 통해 사용 가능한 모든 메서드를 확인할 수 있다.
+
+
+
+### 게시글에 댓글 남기기
+
+Board : Comment = 1: N,	Foreignkey 관계 사용
+
+Comment 모델 정의
+
+```python
+class Comment(models.Model):
+    # on_delete=models.CASCADE => 모델 삭제 시 관련 테이블의 컴럼도 삭제 
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)
+    content = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+```
+
+board는 테이블 생성 시 컬럼명이 board_id로 자동 변경된다.
+
+1에서 N을 참조할 때 - .comment_set
+
+**N에서 1을 참조할 때 - .board**
+
+#### 댓글 생성 기능 구현
+
+특정 게시글에 댓글 입력란과 출력될 수 있도록 template 수정한다.
+
+form 의 정보를 받아 Comment 테이블에 내용을 추가해야 하므로 method는 POST 방식!
+
+특정 게시글에 대한 댓글 기능이므로 POST로 전달 시 board_pk가 넘어와야 함
+
+그렇다면 view 함수를 작성하는 과정에서 POST 방식 여부에 따라 return 페이지를 달리 하며 여기서 Tip으로 **pass**를 통해 보다 효율적으로 작성 가능
+
+```python
+def comment_create(request, board_pk):
+    if request.method == 'POST':
+        pass
+    else:
+        return redirect('boards:detail', board.pk)
+```
+
+post 방식에 대한 기능 구현 과정이 다소 길고 뷰함수가 제대로 정의되지 않으면 서버 실행이 불가하기 때문에 위와 같은 방식으로 페이지를 확인하면서 기능을 구현할 수 있다.
+
+최종적으로 댓글 생성에 대한 기능을 구현한  comment_create 함수는 아래와 같다.
+
+```python
+def comments_create(request, board_pk):
+    # 댓글을 달 게시물
+    board = Board.objects.get(pk=board_pk)
+    if request.method == 'POST':
+        # form 에서 넘어온 댓글 정보
+        content = request.POST.get('content')
+        # 댓글 생성 및 저장
+        comment = Comment(board=board, content=content)
+        # comment = Comment(board_id=board.pk, content=content)
+        comment.save()
+        return redirect('boards:detail', board.pk)
+        # return redirect('boards:detail', comment.board_id)
+    else:
+        return redirect('boards:detail', board.pk)
+```
+
+이 기능만으로는 DB에 댓글이 추가만 되고 출력되지 않으므로, detail 함수에서 댓글을 불러 출력할 수 있도록 한다. 
+
+#### 댓글 삭제
+
+
+
+### 구현 중에 겪은 예외 상황
+
+```
+django.urls.exceptions.NoReverseMatch:
+```
+
+url 구성이 잘못된 경우 => url 입력하는 코드를 살핀다. 또는 template 에서 받는 인자 값을 확인 것.(variable routing인지 object인지)
 
