@@ -145,6 +145,7 @@ settings.py 내 MIDDLEWARE는 url 패턴을 인식하기 전에 코드를 확인
 **app_name/static/** 경로 안의 파일들만 인식 가능하다. 예를 들어 /static 내 새롭게 images 디렉토리를 추가하고 그 안에 이미지를 불러올 때 아래와 같이 입력하여 브라우저에서 이미지 처리가 가능하다.
 
 ```python
+{% extends 'boards/base.html' %}
 {% load static %}
 
 {%  block content %}
@@ -152,6 +153,8 @@ settings.py 내 MIDDLEWARE는 url 패턴을 인식하기 전에 코드를 확인
     <img src="{% static 'images/sample_img.jpg' %}" alt="sample img">
 {% endblock %}
 ```
+
+`{% load static %}`은 항상 extends 하단에 배치한다.
 
 
 
@@ -208,3 +211,75 @@ $ python manage.py shell_plus
 
 1. migrations 에서 000$ 번호 붙은 파일들만 지우기
 2. db.splite3 파일 지우기(서버 꺼져 있어야 함)
+
+
+
+### Static 경로 설정 및 모델에 image 추가
+
+```python
+# 새로운 static 경로 추가, Django에서 해당 경로 자동 인식
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'crud', 'assets', 'images'),
+]
+
+# 실제 파일이 저장되는 경로와 이미지 URL 경로 설정
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+```
+
+
+
+
+
+
+
+```python
+image = models.ImageField(blank=True)
+```
+
+새로운 컬럼 추가 시 테이블 가장 오른쪽에 배치됨, `blank=True`를 통해 이미지 없이도 게시 가능
+
+models.py 수정 후 `makemigrations`, `migrate`명령을 통해 ORM 세팅을 완료한다.
+
+이후 sqlite3에서 테이블에 컬럼이 추가 되었는지 확인한다.
+
+```sqlite
+sqlite> .schema boards_board
+CREATE TABLE IF NOT EXISTS "boards_board" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(10) NOT NULL, "content" text NOT NULL, "created_at" datetime NOT NULL
+, "updated_at" datetime NOT NULL, "image" varchar(100) NOT NULL);
+
+```
+
+### VS CODE에서 Django 프로젝트
+
+```bash
+student@M90311 MINGW64 ~/Desktop/hyunho/django/myform
+$ python -m venv form-venv
+
+student@M90311 MINGW64 ~/Desktop/hyunho/django/myform
+$ ls
+form-venv/
+
+student@M90311 MINGW64 ~/Desktop/hyunho/django/myform
+$ source form-venv/Scripts/activate
+
+```
+
+가상환경 실행 명령어는 `$ source form-venv/Scripts/activate`
+
+
+
+이후 Django 모듈과 pip update명령을 통해 프로젝트 시작 준비를 마친다.
+
+이후 bash에서 `startproject` , `startapp`, `runserver`를 통해 서버 실행 되는지 확인하며, 이후 서버 및 페이지 구현은 Django 가이드라인에 따라 작성한다.
+
+
+
+[링크: Django에서 bootstrap4 적용](https://django-bootstrap4.readthedocs.io/)
+
+### Django 서버 구축 방식
+
+FBV - Function Based View
+
+CBV - Class Based View
+

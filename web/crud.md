@@ -262,3 +262,151 @@ django.urls.exceptions.NoReverseMatch:
 
 url 구성이 잘못된 경우 => url 입력하는 코드를 살핀다. 또는 template 에서 받는 인자 값을 확인 것.(variable routing인지 object인지)
 
+### 이미지 추가, 조회
+
+#### 기본 설정 순서
+
+**모듈 추가**
+
+```bash
+$ pip install pillow
+$ pip install pilkit
+$ pip install django-imagekit
+```
+
+
+
+**models.py에서 image 추가**
+
+```python
+from imagekit.models import ProcessedImageField
+from imagekit.processors import Thumbnail
+class Board(models.Model):
+    ...
+    
+    image = ProcessedImageField(
+            upload_to='boards/images',   # 저장 위치 (media 이후의 경로)
+            processors=[Thumbnail(200,300)],    # 처리할 작업 목록
+            format='JPEG',  # 저장 포맷
+            options={'quality': 90},    # 추가 옵션
+        )
+    # image = models.ImageField(blank=True)
+```
+
+초기에 ImageField를 이용해 타입을 설정했으나, django-imagekit 모듈을 이용하여 재정의 했다.
+
+모델을 수정했으니 이후 bash에서 `makemigrations`와 `migrate`명령을 통해 ORM 적용되도록 세팅한다.
+
+
+
+
+
+
+
+`<form>`태그에서 이미지를 업로드 할 경우 반드시 `enctype`특성을 설정한다.
+
+```html
+<form action="{% url 'boards:update' board.pk %}" method="POST" enctype="multipart/form-data">
+</form>
+```
+
+
+
+### ※ favicon 추가
+
+16x16, 32x32의 png 확장자 이미지 파일이며, 설정은 아래와 같다.
+
+```html
+<link rel="shotcut icon" type="image/png" href="{% static 'boards/images/favicon.png' %}">
+```
+
+
+
+### Django의 Form 기능을 이용하여 CRUD
+
+local apps 디렉토리에 forms.py를 만들고, 
+
+사용할 form에 대하여 클래스를 아래와 같이 정의한다.
+
+```python
+from django import forms
+
+class BoardForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    content = forms.CharField()
+```
+
+클래스 정의 후 , `views.py`에서 해당 클래스 import를 하고 뷰 함수에서 인스턴스 생성한다.
+
+```python
+form = BoardForm()
+```
+
+form을 GET 방식으로 전달할 경우 Dict 구조로 페이지에 전달하고 해당 페이지에서 
+
+`{{ form }}`을 입력하면 Django 에서 라벨과 입력창이 담긴 폼을 출력한다.
+
+조금 더 디테일하게 form에 대한 수정도 아래와 같이 할 수 있다.
+
+```python
+class BoardForm(forms.Form):
+    title = forms.CharField(
+        max_length=50,
+        label='제목',
+        widget=forms.TextInput(
+            attrs={
+                'class':'title',
+                'placeholder': 'Enter the title'
+
+            }
+        )
+
+    )
+    content = forms.CharField(
+        label='내용',
+        widget=forms.Textarea(
+            attrs={
+                'class': 'content-type',
+                'rows': 5,
+                'cols': 50,
+                'placeholder': 'Enter the content',
+            }
+        )
+
+    )
+```
+
+CRUD에서 Create, Update가 Form을 사용하므로 이전 
+
+
+
+```bash
+In [4]: board.__dict__
+Out[4]:
+{'_state': <django.db.models.base.ModelState at 0x6b9f438>,
+ 'id': 5,
+ 'title': 'fifth_ddffff',
+ 'content': 'fifth testssssss',
+ 'created_at': datetime.datetime(2019, 6, 13, 1, 23, 3, 451804, tzinfo=<UTC>),
+ 'updated_at': datetime.datetime(2019, 6, 13, 2, 13, 53, 960804, tzinfo=<UTC>)}
+```
+
+
+
+
+
+
+
+#### ※ 파이썬 코드 실행 메커니즘을 확인할 때
+
+```
+from IPython import embed
+
+'''
+# 코드를 중지할 부분에 embed() 삽입
+embed()
+```
+
+
+
+#### ※ 사용자에게 페이지 오류메시지를 표시하는 방법
