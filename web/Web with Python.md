@@ -267,8 +267,6 @@ $ source form-venv/Scripts/activate
 
 가상환경 실행 명령어는 `$ source form-venv/Scripts/activate`
 
-
-
 이후 Django 모듈과 pip update명령을 통해 프로젝트 시작 준비를 마친다.
 
 이후 bash에서 `startproject` , `startapp`, `runserver`를 통해 서버 실행 되는지 확인하며, 이후 서버 및 페이지 구현은 Django 가이드라인에 따라 작성한다.
@@ -282,4 +280,45 @@ $ source form-venv/Scripts/activate
 FBV - Function Based View
 
 CBV - Class Based View
+
+### Celery를 이용한 백그라운드 작업 수행
+
+celery는 비동기 작업을 수행할 수 있는 파이썬의 패키지이다. 브로커가 필요하며 메시지를 통해 작업이 할당된다.
+
+브로커는 Redis를 선택했으며, celery와 함께 설치할 수 있다.
+
+```bash
+pip install -U 'celery[redis]'
+```
+
+```
+Celery is a project with minimal funding, so we don’t support Microsoft Windows. Please don’t open any issues related to that platform.
+```
+
+
+
+### 4. Requests
+
+파이썬에서 URL 요청을 하기 위해 사용되는 모듈이다. requests 패키지에 대한 설명이 있는 공식 문서를 참고하여 URL 요청을 어떻게 하는지 확인했다.
+
+[링크바로가기](https://2.python-requests.org//en/master/user/quickstart/)
+
+```python
+import requests
+
+res = requests.get('https://www.naver.com')
+```
+
+위와 같은 요청에 대한 응답을 통해 html, json 등 요청한 URL에 해당되는 응답 내용을 확인할 수 있다. `res`는 Response 객체이며, 이를 통해 필요한 정보를 얻을 수 있다.
+
+##### Query String을 통해 특정 데이터를 요청 시
+
+```python
+payload = {'key1': 'value1', 'key2': 'value2'}
+res = requests.get('https://httpbin.org/get', params=payload)
+
+# res.url 출력 시 https://httpbin.org/get?key2=value2&key1=value1
+```
+
+requests.get() 메소드의 argument 로 params를 사용하여 파라미터 접근이 가능하다.
 

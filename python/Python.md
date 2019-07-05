@@ -54,3 +54,31 @@ numbers = random.sample(range(1, 46), 6)
 
 여기서 sample() 함수를 통해 범위와 추출할 수를 지정하고, 해당 범위 내에서 1번 발생하므로 중복이 발생하지 않는다.
 
+### 3. datetime 패키지
+
+datetime 패키지에는 datetime(날짜,시간), date(날짜), time(시간), timedelta(시간 구간 정보) 클래스 등을 제공
+
+`datetime`클래스에는 `now()` 메서드를 통해 현재 날짜, 시간을 얻어낼 수 있으며, 해당 메서드는 객체 생성하지 않고 클래스에서 사용가능하다.
+
+```python
+>>> import datetime
+>>> dt = datetime.datetime.now()
+>>> dt
+datetime.datetime(2019, 7, 3, 0, 49, 22, 232229)
+```
+
+해당 클래스 객체의 속성으로는 year, month, day, hour, minute, second, microsecond가 있다.
+
+`now()`메서드 이외에도 다른메서드들도 존재하며 문자열로 변환하는 `strftime()`을 자주 쓸 것 같다고 생각하며 아래와 같이 호출 방법과 호출 방법을 기억하자.
+
+```python
+>>> dt.date()
+datetime.date(2019, 7, 3)
+>>> dt.strftime('%Y%m%d')
+'20190703'
+```
+
+해당 패키지를 사용법을 찾아보는 경우가 있어 필요할 때 마다 메모하여 쉽게 찾아 적용할 수 있도록 하기 위한 목적에서 간략하게 정리하고 마무리한다. 자세한 내용은 아래 링크의 공식 문서를 확인하도록 한다.
+
+https://docs.python.org/3.7/library/datetime.html#
+

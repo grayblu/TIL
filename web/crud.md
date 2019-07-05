@@ -73,9 +73,11 @@ models.py에서 Board라는 클래스가 있고, 필드를 title, content로 지
 
 ※ 해당 경우는 작성 완료와 함께 저장이 된다. 유효성 검증이 어렵다.
 
-
+****
 
 #### Read
+
+#### ※ get 과 filter 의 차이
 
 get 메서드를 통해 id 값에 해당하는 컬럼을 가져온다.(id 또는 pk)
 
@@ -94,7 +96,7 @@ get 메서드를 통해 id 값에 해당하는 컬럼을 가져온다.(id 또는
 
 ```
 
-filter는 장고에서 하나 이상의 데이터가 존재한다고 가정하기 때문에 쿼리셋으로 리턴한다.
+filter는 장고에서 **하나 이상의 데이터가 존재한다고 가정**하기 때문에 쿼리셋으로 리턴한다.
 
 ```bash
 >>> boards = Board.objects.filter(title='first').first()
