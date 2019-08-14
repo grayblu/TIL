@@ -82,3 +82,27 @@ datetime.date(2019, 7, 3)
 
 https://docs.python.org/3.7/library/datetime.html#
 
+### 4. 문자열 조작
+
+#### 1) 인덱싱, 슬라이싱
+
+문자열의 인덱스는 0부터 시작하며, 슬라이싱할 때 시작부터 **어느 지점의 앞까지** 문자열을 자를 건지 정의한다. `[시작:슬라이싱 지점]` 
+
+```python
+>>> str = 'hello world'
+>>> len(str)
+11
+>>> str[0:5]
+'hello'
+>>> str[0:6]
+'hello '
+>>> str[6:]
+'world'
+>>> str[6:-2]
+'wor'
+```
+
+
+
+
+

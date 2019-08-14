@@ -128,7 +128,22 @@ urlpatterns = [
 
 해당 설정으로 인해, /pages 요청에 대하여 인식하고 views.py에 있는 index()함수를 호출한다. index()
 
+### 구현 중에 겪은 예외 상황: `django.urls.exceptions.NoReverseMatch:`
 
+url 구성이 잘못된 경우 => url 입력하는 코드를 살핀다. 또는 template 에서 받는 인자 값을 확인 것.(variable routing인지 object인지)
+
+```html
+<!-- <a href="{% url 'movies:detail' movieCd %}"><button type="button" class="btn btn-primary">상세보기</button></a> -->
+
+```
+
+Django Template 에서 주석을 하더라도 Template Pattern을 읽기 때문에 NoReverseMatch 에러 발생할 수 있음.
+
+이 경우에는 `{# comment #}`를 이용할 것!
+
+해당 이슈를 다루는 내용을 참조한다
+
+[https://www.pythoncircle.com/post/424/solving-django-error-noreversematch-at-url-with-arguments-and-keyword-arguments-not-found/]()
 
 
 

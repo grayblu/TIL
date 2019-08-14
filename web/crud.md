@@ -256,14 +256,6 @@ def comments_create(request, board_pk):
 
 
 
-### 구현 중에 겪은 예외 상황
-
-```
-django.urls.exceptions.NoReverseMatch:
-```
-
-url 구성이 잘못된 경우 => url 입력하는 코드를 살핀다. 또는 template 에서 받는 인자 값을 확인 것.(variable routing인지 object인지)
-
 ### 이미지 추가, 조회
 
 #### 기본 설정 순서
@@ -298,10 +290,6 @@ class Board(models.Model):
 초기에 ImageField를 이용해 타입을 설정했으나, django-imagekit 모듈을 이용하여 재정의 했다.
 
 모델을 수정했으니 이후 bash에서 `makemigrations`와 `migrate`명령을 통해 ORM 적용되도록 세팅한다.
-
-
-
-
 
 
 
